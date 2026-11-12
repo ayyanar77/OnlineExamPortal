@@ -218,3 +218,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# EpicalExam private files
+candidates.json
+results.json
+
+# Local environment
+EpicalExam/venv/
+.env
+
+# IDE
+.vscode/
+.idea/
