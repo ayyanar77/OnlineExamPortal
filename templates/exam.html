@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ exam.name }} | EpicalExam Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #7c3aed;
+      --primary-light: #a78bfa;
+      --secondary: #06b6d4;
+      --accent: #f59e0b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --bg-dark: #0a0a1a;
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Background glows */
+    .bg-blobs {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.18;
+    }
+    .b1 { width: 500px; height: 500px; background: #7c3aed; top: -100px; left: -100px; }
+    .b2 { width: 450px; height: 450px; background: #06b6d4; bottom: -100px; right: -100px; }
+
+    /* Proctoring Alert Banner */
+    .proctor-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #ef4444;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.85; }
+    }
+
+    /* Top Nav Bar */
+    .exam-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      background: rgba(10, 10, 26, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .exam-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .exam-title-wrap h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .exam-title-wrap span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Timer Display */
+    .timer-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--glass-border);
+      padding: 8px 18px;
+      border-radius: 14px;
+    }
+    .timer-icon {
+      font-size: 16px;
+      color: var(--secondary);
+    }
+    .timer-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .timer-digits {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+    .timer-digits.urgent {
+      color: var(--danger);
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0.5; }
+    }
+
+    .proctor-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    /* Main Container */
+    .exam-container {
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 28px;
+      max-width: 1400px;
+      margin: 28px auto;
+      padding: 0 24px;
+    }
+
+    /* Question Panel */
+    .question-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 36px;
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 580px;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .q-number {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .q-marks {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .q-text {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.5;
+      color: #fff;
+      margin-bottom: 32px;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 40px;
+    }
+
+    .option-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1.5px solid var(--glass-border);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .option-card:hover {
+      background: rgba(124, 58, 237, 0.08);
+      border-color: rgba(124, 58, 237, 0.3);
+    }
+    .option-card.selected {
+      background: rgba(124, 58, 237, 0.16);
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(124, 58, 237, 0.2);
+    }
+
+    .option-radio {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .option-card.selected .option-radio {
+      border-color: var(--primary);
+      background: var(--primary);
+    }
+    .option-card.selected .option-radio::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .option-label {
+      font-size: 15px;
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    /* Action Buttons Footer */
+    .q-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+      border-top: 1px solid var(--glass-border);
+    }
+    .btn-nav {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .btn-nav:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-clear {
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn-clear:hover { color: var(--danger); text-decoration: underline; }
+
+    .btn-submit-exam {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+      transition: all 0.2s;
+    }
+    .btn-submit-exam:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+
+    /* Sidebar / Palette */
+    .palette-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .palette-card {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 24px;
+      backdrop-filter: blur(20px);
+    }
+
+    .palette-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .palette-btn {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      border: 1.5px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .palette-btn:hover {
+      border-color: var(--primary-light);
+      color: #fff;
+    }
+    .palette-btn.current {
+      border-color: var(--primary);
+      background: rgba(124, 58, 237, 0.2);
+      color: var(--primary-light);
+      box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
+    }
+    .palette-btn.answered {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+
+    /* Legend */
+    .palette-legend {
+      display: flex;
+      gap: 14px;
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--glass-border);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    /* Security Guidelines Card */
+    .security-card {
+      background: rgba(239, 68, 68, 0.05);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+    .security-card h4 {
+      font-size: 13px;
+      color: #fca5a5;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .security-card ul {
+      list-style: none;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .security-card li::before {
+      content: '• ';
+      color: #fca5a5;
+    }
+
+    /* Confirmation Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-box {
+      background: #111126;
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      max-width: 440px;
+      width: 100%;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+    }
+    .modal-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(124, 58, 237, 0.15);
+      color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin: 0 auto 16px;
+    }
+    .modal-box h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .modal-box p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .modal-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 16px;
+      border-radius: 14px;
+      margin-bottom: 24px;
+    }
+    .modal-stat-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .modal-stat-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .modal-actions button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-cancel {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .btn-confirm-submit {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+    }
+
+    @media (max-width: 900px) {
+      .exam-container { grid-template-columns: 1fr; }
+      .exam-header { padding: 12px 16px; }
+      .question-panel { padding: 20px; min-height: 480px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-blobs">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+  </div>
+
+  <!-- Proctoring Warning Banner -->
+  <div class="proctor-banner" id="proctorBanner">
+    ⚠️ WARNING: Tab switch detected! All tab switches are logged and will affect your proctoring score. Stay on this screen!
+  </div>
+
+  <!-- Header -->
+  <header class="exam-header">
+    <div class="exam-brand">
+      <div class="brand-icon"><i class="fas fa-graduation-cap"></i></div>
+      <div class="exam-title-wrap">
+        <h2>{{ exam.name }}</h2>
+        <span>Candidate: {{ candidate.name }} ({{ candidate.roll_no }})</span>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:16px;">
+      <div class="proctor-status" id="proctorStatus">
+        <i class="fas fa-shield-halved"></i>
+        <span>Proctored Session</span>
+      </div>
+
+      <div class="timer-box">
+        <i class="fas fa-clock timer-icon"></i>
+        <div>
+          <div class="timer-text">Time Left</div>
+          <div class="timer-digits" id="timerDisplay">--:--</div>
+        </div>
+      </div>
+
+      <button class="btn-nav" onclick="toggleFullscreen()" title="Toggle Fullscreen">
+        <i class="fas fa-expand"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Container -->
+  <div class="exam-container">
+
+    <!-- Question View -->
+    <main class="question-panel">
+      <div>
+        <div class="q-meta">
+          <span class="q-number" id="qNumberLabel">Question 1 of {{ exam.questions|length }}</span>
+          <span class="q-marks">1 Mark</span>
+        </div>
+
+        <div class="q-text" id="qText">Loading question...</div>
+
+        <div class="options-grid" id="optionsContainer">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <div class="q-actions">
+        <button class="btn-nav" id="btnPrev" onclick="navigateQuestion(-1)">
+          <i class="fas fa-arrow-left"></i> Previous
+        </button>
+
+        <button class="btn-clear" onclick="clearCurrentChoice()">
+          <i class="fas fa-rotate-left"></i> Clear Selection
+        </button>
+
+        <div style="display:flex; gap:12px;">
+          <button class="btn-nav" id="btnNext" onclick="navigateQuestion(1)">
+            Next <i class="fas fa-arrow-right"></i>
+          </button>
+          <button class="btn-submit-exam" onclick="openSubmitModal()">
+            <i class="fas fa-check-double"></i> Submit Exam
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Side Question Palette -->
+    <aside class="palette-panel">
+      <div class="palette-card">
+        <div class="palette-title">
+          <span>Question Palette</span>
+          <span style="font-size:12px; color:var(--text-muted); font-weight:normal;" id="answeredCount">0 / {{ exam.questions|length }} Answered</span>
+        </div>
+
+        <div class="palette-grid" id="paletteGrid">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <div class="palette-legend">
+          <div class="legend-item"><div class="dot" style="background:var(--success);"></div> Answered</div>
+          <div class="legend-item"><div class="dot" style="background:rgba(255,255,255,0.1);"></div> Unanswered</div>
+          <div class="legend-item"><div class="dot" style="background:var(--primary);"></div> Current</div>
+        </div>
+      </div>
+
+      <div class="palette-card security-card">
+        <h4><i class="fas fa-shield-virus"></i> Security Active</h4>
+        <ul>
+          <li>Full window lockdown active</li>
+          <li>Tab switching is automatically logged</li>
+          <li>Right click, copy, and paste are disabled</li>
+          <li>Auto-submit occurs when the timer ends</li>
+        </ul>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Submit Confirmation Modal -->
+  <div class="modal-overlay" id="submitModal">
+    <div class="modal-box">
+      <div class="modal-icon"><i class="fas fa-paper-plane"></i></div>
+      <h3>Submit Your Exam?</h3>
+      <p>Are you sure you want to finish the exam now? You will not be able to modify your answers once submitted.</p>
+
+      <div class="modal-stats">
+        <div>
+          <div class="modal-stat-val" id="modalAnswered" style="color:var(--success);">0</div>
+          <div class="modal-stat-lbl">Answered</div>
+        </div>
+        <div>
+          <div class="modal-stat-val" id="modalUnanswered" style="color:var(--danger);">0</div>
+          <div class="modal-stat-lbl">Unanswered</div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeSubmitModal()">Review Questions</button>
+        <button class="btn-confirm-submit" id="btnConfirmSubmit" onclick="submitExamToServer()">
+          Yes, Submit Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Exam Data injected safely from backend
+    const EXAM_ID = {{ exam.id }};
+    const DURATION_MINUTES = {{ exam.duration }};
+    const QUESTIONS = {{ exam.questions | tojson }};
+    const TOTAL_QUESTIONS = QUESTIONS.length;
+
+    let currentIndex = 0;
+    let answers = {}; // { qId: selectedOptionIndex }
+    let tabSwitchCount = 0;
+    let timeLeftSeconds = DURATION_MINUTES * 60;
+    let timerInterval = null;
+    let isSubmitting = false;
+
+    // Load any saved responses from localStorage for resilience
+    const storageKey = `epical_exam_${EXAM_ID}`;
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) answers = JSON.parse(saved);
+    } catch(e) {}
+
+    // Init Palette
+    function initPalette() {
+      const grid = document.getElementById('paletteGrid');
+      grid.innerHTML = '';
+      QUESTIONS.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'palette-btn';
+        btn.id = `palette-btn-${idx}`;
+        btn.textContent = idx + 1;
+        btn.onclick = () => jumpToQuestion(idx);
+        grid.appendChild(btn);
+      });
+      updatePaletteUI();
+    }
+
+    function updatePaletteUI() {
+      QUESTIONS.forEach((q, idx) => {
+        const btn = document.getElementById(`palette-btn-${idx}`);
+        if (!btn) return;
+        btn.classList.remove('current', 'answered');
+        if (answers[q.id] !== undefined) {
+          btn.classList.add('answered');
+        }
+        if (idx === currentIndex) {
+          btn.classList.add('current');
+        }
+      });
+
+      const answeredTotal = Object.keys(answers).length;
+      document.getElementById('answeredCount').textContent = `${answeredTotal} / ${TOTAL_QUESTIONS} Answered`;
+    }
+
+    // Render Question
+    function renderQuestion(idx) {
+      currentIndex = idx;
+      const q = QUESTIONS[idx];
+
+      document.getElementById('qNumberLabel').textContent = `Question ${idx + 1} of ${TOTAL_QUESTIONS}`;
+      document.getElementById('qText').textContent = q.text;
+
+      const container = document.getElementById('optionsContainer');
+      container.innerHTML = '';
+
+      const selectedOpt = answers[q.id];
+
+      q.options.forEach((optText, optIdx) => {
+        const card = document.createElement('div');
+        card.className = 'option-card' + (selectedOpt === optIdx ? ' selected' : '');
+        card.onclick = () => selectOption(q.id, optIdx);
+
+        const radio = document.createElement('div');
+        radio.className = 'option-radio';
+
+        const label = document.createElement('div');
+        label.className = 'option-label';
+        label.textContent = optText;
+
+        card.appendChild(radio);
+        card.appendChild(label);
+        container.appendChild(card);
+      });
+
+      // Update nav buttons
+      document.getElementById('btnPrev').disabled = (idx === 0);
+      document.getElementById('btnNext').disabled = (idx === TOTAL_QUESTIONS - 1);
+
+      updatePaletteUI();
+    }
+
+    function selectOption(qId, optIdx) {
+      answers[qId] = optIdx;
+      try { localStorage.setItem(storageKey, JSON.stringify(answers)); } catch(e) {}
+      renderQuestion(currentIndex);
+    }
+
+    function clearCurrentChoice() {
+      const q = QUESTIONS[currentIndex];
+      delete answers[q.id];
+      try { localStorage.setItem(storageKey, JSON.stringify(answers)); } catch(e) {}
+      renderQuestion(currentIndex);
+    }
+
+    function navigateQuestion(delta) {
+      const newIdx = currentIndex + delta;
+      if (newIdx >= 0 && newIdx < TOTAL_QUESTIONS) {
+        renderQuestion(newIdx);
+      }
+    }
+
+    function jumpToQuestion(idx) {
+      if (idx >= 0 && idx < TOTAL_QUESTIONS) {
+        renderQuestion(idx);
+      }
+    }
+
+    // Timer
+    function startTimer() {
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        timeLeftSeconds--;
+        updateTimerDisplay();
+
+        if (timeLeftSeconds <= 0) {
+          clearInterval(timerInterval);
+          alert('Time has expired! Submitting your exam automatically now.');
+          submitExamToServer();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timeLeftSeconds / 60);
+      const secs = timeLeftSeconds % 60;
+      const display = document.getElementById('timerDisplay');
+      display.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+      if (timeLeftSeconds <= 180) { // last 3 mins
+        display.classList.add('urgent');
+      }
+    }
+
+    // Proctoring & Anti-Cheat
+    function setupProctoring() {
+      // Tab Switch detection
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden && !isSubmitting) {
+          triggerSecurityWarning();
+        }
+      });
+
+      window.addEventListener('blur', () => {
+        if (!isSubmitting) {
+          triggerSecurityWarning();
+        }
+      });
+
+      // Prevent Context Menu (Right Click)
+      document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+      // Prevent Copy / Cut / Paste
+      document.addEventListener('copy', (e) => e.preventDefault());
+      document.addEventListener('cut', (e) => e.preventDefault());
+      document.addEventListener('paste', (e) => e.preventDefault());
+
+      // Prevent common shortcut keys
+      document.addEventListener('keydown', (e) => {
+        if (
+          e.key === 'F12' ||
+          (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'c' || e.key === 'C' || e.key === 'v' || e.key === 'V' || e.key === 'r' || e.key === 'R'))
+        ) {
+          e.preventDefault();
+        }
+      });
+
+      // Prevent accidental tab close
+      window.addEventListener('beforeunload', (e) => {
+        if (!isSubmitting) {
+          e.preventDefault();
+          e.returnValue = 'You have an active exam session. Leaving will submit your test!';
+        }
+      });
+    }
+
+    function triggerSecurityWarning() {
+      tabSwitchCount++;
+      const banner = document.getElementById('proctorBanner');
+      banner.style.display = 'block';
+      banner.textContent = `⚠️ PROCTOR ALERT #${tabSwitchCount}: Leaving the exam tab is recorded. Please remain on the screen!`;
+
+      setTimeout(() => {
+        banner.style.display = 'none';
+      }, 4000);
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    // Submission Logic
+    function openSubmitModal() {
+      const answeredTotal = Object.keys(answers).length;
+      const unansweredTotal = TOTAL_QUESTIONS - answeredTotal;
+
+      document.getElementById('modalAnswered').textContent = answeredTotal;
+      document.getElementById('modalUnanswered').textContent = unansweredTotal;
+      document.getElementById('submitModal').style.display = 'flex';
+    }
+
+    function closeSubmitModal() {
+      document.getElementById('submitModal').style.display = 'none';
+    }
+
+    async function submitExamToServer() {
+      if (isSubmitting) return;
+      isSubmitting = true;
+      clearInterval(timerInterval);
+
+      const btn = document.getElementById('btnConfirmSubmit');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+      }
+
+      try {
+        const response = await fetch(`/exam/${EXAM_ID}/submit`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            answers: answers,
+            tab_switches: tabSwitchCount
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.result_id) {
+          // Clear saved local storage
+          try { localStorage.removeItem(storageKey); } catch(e) {}
+          window.location.href = `/result/${data.result_id}`;
+        } else {
+          alert('Submission error: ' + (data.error || 'Failed to record exam. Redirecting to dashboard.'));
+          window.location.href = '/dashboard';
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Connection error occurred. Retrying submission...');
+        setTimeout(() => {
+          isSubmitting = false;
+          submitExamToServer();
+        }, 1500);
+      }
+    }
+
+    // Initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      initPalette();
+      renderQuestion(0);
+      startTimer();
+      setupProctoring();
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exam Result | {{ result.exam_name }} | EpicalExam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #7c3aed;
+      --primary-light: #a78bfa;
+      --secondary: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --accent: #f59e0b;
+      --bg-dark: #0a0a1a;
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    .bg-blobs {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.2;
+    }
+    .b1 { width: 500px; height: 500px; background: #7c3aed; top: -100px; left: -100px; }
+    .b2 { width: 450px; height: 450px; background: #06b6d4; bottom: -100px; right: -100px; }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 48px;
+      background: rgba(10, 10, 26, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .brand-title {
+      font-size: 20px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto 0;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Result Hero Card */
+    .hero-card {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
+      padding: 44px;
+      backdrop-filter: blur(20px);
+      text-align: center;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 6px;
+      background: {% if result.passed %}linear-gradient(90deg, #10b981, #06b6d4){% else %}linear-gradient(90deg, #ef4444, #f59e0b){% endif %};
+    }
+
+    .status-badge-lg {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+      background: {% if result.passed %}rgba(16, 185, 129, 0.15){% else %}rgba(239, 68, 68, 0.15){% endif %};
+      color: {% if result.passed %}#10b981{% else %}#ef4444{% endif %};
+      border: 1px solid {% if result.passed %}rgba(16, 185, 129, 0.3){% else %}rgba(239, 68, 68, 0.3){% endif %};
+    }
+
+    .hero-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .hero-sub {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    /* Score Highlights */
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .score-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      padding: 20px 16px;
+    }
+    .score-val {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .score-lbl {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Actions */
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(124, 58, 237, 0.5);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--glass-border);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Detailed Questions Review */
+    .review-section {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px;
+      padding: 36px;
+      backdrop-filter: blur(20px);
+    }
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .review-header h3 {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .q-review-item {
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+    .q-review-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .q-badge {
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .q-badge.correct {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+    .q-badge.incorrect {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+    }
+
+    .q-review-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .review-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .review-opt {
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .review-opt.is-correct-ans {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.4);
+      color: #6ee7b7;
+      font-weight: 600;
+    }
+    .review-opt.user-wrong-choice {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+
+    @media (max-width: 768px) {
+      .score-grid { grid-template-columns: 1fr 1fr; }
+      .header-bar { padding: 16px 20px; }
+      .hero-card { padding: 24px; }
+      .review-section { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-blobs">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+  </div>
+
+  <header class="header-bar">
+    <a href="/dashboard" class="brand-wrap">
+      <div class="brand-icon"><i class="fas fa-graduation-cap"></i></div>
+      <span class="brand-title">EpicalExam</span>
+    </a>
+    <a href="/dashboard" class="btn-action btn-secondary">
+      <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+  </header>
+
+  <div class="container">
+
+    <!-- Hero Card -->
+    <div class="hero-card">
+      <div class="status-badge-lg">
+        {% if result.passed %}
+          <i class="fas fa-check-circle"></i> EXAMINATION PASSED
+        {% else %}
+          <i class="fas fa-circle-xmark"></i> NEEDS IMPROVEMENT
+        {% endif %}
+      </div>
+
+      <h1 class="hero-title">{{ result.exam_name }}</h1>
+      <p class="hero-sub">Candidate: {{ candidate.name }} ({{ candidate.roll_no }}) · Submitted on {{ result.submitted_at[:10] }} at {{ result.submitted_at[11:16] }} UTC</p>
+
+      <div class="score-grid">
+        <div class="score-box">
+          <div class="score-val" style="color:{% if result.passed %}#10b981{% else %}#ef4444{% endif %};">
+            {{ result.percentage }}%
+          </div>
+          <div class="score-lbl">Final Score</div>
+        </div>
+        <div class="score-box">
+          <div class="score-val">{{ result.score }} / {{ result.total }}</div>
+          <div class="score-lbl">Correct Answers</div>
+        </div>
+        <div class="score-box">
+          <div class="score-val">{{ result.time_taken_seconds // 60 }}m {{ result.time_taken_seconds % 60 }}s</div>
+          <div class="score-lbl">Time Taken</div>
+        </div>
+        <div class="score-box">
+          <div class="score-val" style="color:{% if result.tab_switches == 0 %}#10b981{% else %}#f59e0b{% endif %};">
+            {{ result.tab_switches }}
+          </div>
+          <div class="score-lbl">Proctor Alerts</div>
+        </div>
+      </div>
+
+      <div class="hero-actions">
+        <a href="/dashboard" class="btn-action btn-primary">
+          <i class="fas fa-grip"></i> Go to Dashboard
+        </a>
+        <button class="btn-action btn-secondary" onclick="window.print()">
+          <i class="fas fa-print"></i> Print / Save Report
+        </button>
+      </div>
+    </div>
+
+    <!-- Question by Question Review -->
+    <div class="review-section">
+      <div class="review-header">
+        <h3><i class="fas fa-list-check" style="color:var(--primary-light);"></i> Detailed Question Analysis</h3>
+        <span style="font-size:13px; color:var(--text-muted);">{{ result.question_results|length }} Total Questions</span>
+      </div>
+
+      {% for qr in result.question_results %}
+      <div class="q-review-item">
+        <div class="q-review-top">
+          <span style="font-size:12px; color:var(--text-muted); font-weight:700;">QUESTION {{ loop.index }}</span>
+          {% if qr.is_correct %}
+            <span class="q-badge correct"><i class="fas fa-check"></i> Correct (+1 Mark)</span>
+          {% else %}
+            <span class="q-badge incorrect"><i class="fas fa-xmark"></i> Incorrect (0 Marks)</span>
+          {% endif %}
+        </div>
+
+        <div class="q-review-text">{{ qr.question_text }}</div>
+
+        <div class="review-options">
+          {% for opt in qr.options %}
+            {% set opt_idx = loop.index0 %}
+            {% set is_user_choice = (qr.selected == opt_idx or qr.selected == opt_idx|string) %}
+            {% set is_correct_answer = (qr.correct == opt_idx) %}
+
+            <div class="review-opt {% if is_correct_answer %}is-correct-ans{% elif is_user_choice and not qr.is_correct %}user-wrong-choice{% endif %}">
+              <span>{{ opt }}</span>
+              <div>
+                {% if is_correct_answer %}
+                  <span style="font-size:11px; font-weight:700; color:#10b981;"><i class="fas fa-check-double"></i> Correct Answer</span>
+                {% endif %}
+                {% if is_user_choice and not is_correct_answer %}
+                  <span style="font-size:11px; font-weight:700; color:#ef4444;"><i class="fas fa-xmark"></i> Your Answer</span>
+                {% elif is_user_choice and is_correct_answer %}
+                  <span style="font-size:11px; font-weight:700; color:#10b981; margin-left:8px;"><i class="fas fa-circle-check"></i> (Your Choice)</span>
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  </div>
+
+</body>
+</html>
+
