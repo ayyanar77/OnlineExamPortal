@@ -1,0 +1,373 @@
+[
+  {
+    "id": 1,
+    "name": "Python Programming",
+    "subject": "Computer Science",
+    "description": "Test your Python fundamentals — variables, data types, loops, functions, OOP, and more.",
+    "icon": "fa-python",
+    "color": "#3776AB",
+    "duration": 15,
+    "total_marks": 10,
+    "pass_percentage": 60,
+    "difficulty": "Intermediate",
+    "questions": [
+      {
+        "id": 1,
+        "text": "What is the output of print(type(10))?",
+        "options": ["<class 'float'>", "<class 'int'>", "<class 'str'>", "<class 'number'>"],
+        "correct": 1
+      },
+      {
+        "id": 2,
+        "text": "Which keyword is used to define a function in Python?",
+        "options": ["function", "func", "def", "define"],
+        "correct": 2
+      },
+      {
+        "id": 3,
+        "text": "What does 'len([1, 2, 3])' return?",
+        "options": ["2", "3", "4", "1"],
+        "correct": 1
+      },
+      {
+        "id": 4,
+        "text": "Which of the following is a mutable data type in Python?",
+        "options": ["tuple", "string", "list", "int"],
+        "correct": 2
+      },
+      {
+        "id": 5,
+        "text": "What is the output of 'Hello'[1]?",
+        "options": ["H", "e", "l", "He"],
+        "correct": 1
+      },
+      {
+        "id": 6,
+        "text": "Which operator is used for exponentiation in Python?",
+        "options": ["^", "**", "//", "%%"],
+        "correct": 1
+      },
+      {
+        "id": 7,
+        "text": "What does the 'break' statement do in a loop?",
+        "options": ["Skips current iteration", "Terminates the loop", "Restarts the loop", "Pauses the loop"],
+        "correct": 1
+      },
+      {
+        "id": 8,
+        "text": "How do you start a comment in Python?",
+        "options": ["//", "/* */", "#", "--"],
+        "correct": 2
+      },
+      {
+        "id": 9,
+        "text": "What is the output of bool('')?",
+        "options": ["True", "False", "None", "Error"],
+        "correct": 1
+      },
+      {
+        "id": 10,
+        "text": "Which method adds an element to the end of a list?",
+        "options": ["add()", "insert()", "append()", "push()"],
+        "correct": 2
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Data Structures & Algorithms",
+    "subject": "Computer Science",
+    "description": "Evaluate your knowledge of arrays, linked lists, trees, sorting, and searching algorithms.",
+    "icon": "fa-diagram-project",
+    "color": "#7c3aed",
+    "duration": 20,
+    "total_marks": 10,
+    "pass_percentage": 60,
+    "difficulty": "Intermediate",
+    "questions": [
+      {
+        "id": 1,
+        "text": "What is the time complexity of binary search?",
+        "options": ["O(n)", "O(log n)", "O(n log n)", "O(1)"],
+        "correct": 1
+      },
+      {
+        "id": 2,
+        "text": "Which data structure uses FIFO (First In, First Out)?",
+        "options": ["Stack", "Queue", "Tree", "Graph"],
+        "correct": 1
+      },
+      {
+        "id": 3,
+        "text": "What is the worst-case time complexity of Quick Sort?",
+        "options": ["O(n log n)", "O(n)", "O(n²)", "O(log n)"],
+        "correct": 2
+      },
+      {
+        "id": 4,
+        "text": "Which data structure is used for BFS (Breadth-First Search)?",
+        "options": ["Stack", "Queue", "Priority Queue", "Deque"],
+        "correct": 1
+      },
+      {
+        "id": 5,
+        "text": "A binary tree with n nodes has how many NULL pointers?",
+        "options": ["n", "n - 1", "n + 1", "2n"],
+        "correct": 2
+      },
+      {
+        "id": 6,
+        "text": "Which sorting algorithm has the best average-case performance?",
+        "options": ["Bubble Sort", "Selection Sort", "Merge Sort", "Insertion Sort"],
+        "correct": 2
+      },
+      {
+        "id": 7,
+        "text": "What does a hash table use to store data?",
+        "options": ["Index", "Key-value pairs", "Pointers", "Nodes"],
+        "correct": 1
+      },
+      {
+        "id": 8,
+        "text": "In a max-heap, the root element is:",
+        "options": ["Smallest", "Largest", "Median", "Random"],
+        "correct": 1
+      },
+      {
+        "id": 9,
+        "text": "Which traversal visits the root node first?",
+        "options": ["Inorder", "Preorder", "Postorder", "Level-order"],
+        "correct": 1
+      },
+      {
+        "id": 10,
+        "text": "What is the space complexity of an adjacency matrix for a graph with V vertices?",
+        "options": ["O(V)", "O(V + E)", "O(V²)", "O(E)"],
+        "correct": 2
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Web Development",
+    "subject": "Information Technology",
+    "description": "Test your HTML, CSS, and JavaScript knowledge — DOM, selectors, events, and layout.",
+    "icon": "fa-globe",
+    "color": "#06b6d4",
+    "duration": 15,
+    "total_marks": 10,
+    "pass_percentage": 60,
+    "difficulty": "Beginner",
+    "questions": [
+      {
+        "id": 1,
+        "text": "What does HTML stand for?",
+        "options": ["Hyper Text Markup Language", "High Text Machine Language", "Hyperlinks Text Mark Language", "Home Tool Markup Language"],
+        "correct": 0
+      },
+      {
+        "id": 2,
+        "text": "Which CSS property is used to change the text color?",
+        "options": ["font-color", "text-color", "color", "foreground"],
+        "correct": 2
+      },
+      {
+        "id": 3,
+        "text": "Which HTML tag is used to define an unordered list?",
+        "options": ["<ol>", "<ul>", "<li>", "<list>"],
+        "correct": 1
+      },
+      {
+        "id": 4,
+        "text": "How do you select an element by ID in JavaScript?",
+        "options": ["document.getElement('id')", "document.getElementById('id')", "document.query('id')", "document.find('id')"],
+        "correct": 1
+      },
+      {
+        "id": 5,
+        "text": "Which CSS property controls the space between elements?",
+        "options": ["spacing", "padding", "margin", "gap"],
+        "correct": 2
+      },
+      {
+        "id": 6,
+        "text": "What is the correct syntax to link an external CSS file?",
+        "options": ["<style src='file.css'>", "<css href='file.css'>", "<link rel='stylesheet' href='file.css'>", "<stylesheet>file.css</stylesheet>"],
+        "correct": 2
+      },
+      {
+        "id": 7,
+        "text": "Which event fires when a user clicks an HTML element?",
+        "options": ["onhover", "onpress", "onclick", "onmousedown"],
+        "correct": 2
+      },
+      {
+        "id": 8,
+        "text": "What does the 'display: flex' property do?",
+        "options": ["Makes element invisible", "Creates a flexible box layout", "Makes element fixed", "Creates a grid"],
+        "correct": 1
+      },
+      {
+        "id": 9,
+        "text": "Which JavaScript method converts a JSON string to an object?",
+        "options": ["JSON.stringify()", "JSON.parse()", "JSON.convert()", "JSON.decode()"],
+        "correct": 1
+      },
+      {
+        "id": 10,
+        "text": "What does the <meta charset='UTF-8'> tag specify?",
+        "options": ["Page language", "Character encoding", "Page title", "Page description"],
+        "correct": 1
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "SQL & Database Management",
+    "subject": "Information Technology",
+    "description": "Assess your SQL skills — queries, joins, normalization, and database design concepts.",
+    "icon": "fa-database",
+    "color": "#f59e0b",
+    "duration": 15,
+    "total_marks": 10,
+    "pass_percentage": 60,
+    "difficulty": "Intermediate",
+    "questions": [
+      {
+        "id": 1,
+        "text": "Which SQL statement is used to retrieve data from a database?",
+        "options": ["GET", "FETCH", "SELECT", "RETRIEVE"],
+        "correct": 2
+      },
+      {
+        "id": 2,
+        "text": "Which clause is used to filter rows in SQL?",
+        "options": ["FILTER", "WHERE", "HAVING", "CONDITION"],
+        "correct": 1
+      },
+      {
+        "id": 3,
+        "text": "What does the JOIN operation do?",
+        "options": ["Deletes rows", "Merges tables", "Combines rows from two or more tables", "Creates indexes"],
+        "correct": 2
+      },
+      {
+        "id": 4,
+        "text": "Which SQL keyword removes duplicate rows from results?",
+        "options": ["UNIQUE", "DISTINCT", "DIFFERENT", "NO_DUPLICATE"],
+        "correct": 1
+      },
+      {
+        "id": 5,
+        "text": "What is a primary key?",
+        "options": ["A foreign reference", "A unique identifier for each row", "An index", "A table name"],
+        "correct": 1
+      },
+      {
+        "id": 6,
+        "text": "Which aggregate function returns the number of rows?",
+        "options": ["SUM()", "AVG()", "COUNT()", "TOTAL()"],
+        "correct": 2
+      },
+      {
+        "id": 7,
+        "text": "What does 'DROP TABLE students' do?",
+        "options": ["Empties the table", "Removes the table permanently", "Renames the table", "Backs up the table"],
+        "correct": 1
+      },
+      {
+        "id": 8,
+        "text": "Which normal form eliminates partial dependency?",
+        "options": ["1NF", "2NF", "3NF", "BCNF"],
+        "correct": 1
+      },
+      {
+        "id": 9,
+        "text": "What does the GROUP BY clause do?",
+        "options": ["Sorts results", "Groups rows with same values", "Filters results", "Limits rows"],
+        "correct": 1
+      },
+      {
+        "id": 10,
+        "text": "Which SQL command is used to add a new row?",
+        "options": ["ADD", "INSERT INTO", "CREATE", "APPEND"],
+        "correct": 1
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Computer Networks",
+    "subject": "Computer Science",
+    "description": "Test your networking knowledge — OSI model, TCP/IP, protocols, and network security.",
+    "icon": "fa-network-wired",
+    "color": "#10b981",
+    "duration": 15,
+    "total_marks": 10,
+    "pass_percentage": 60,
+    "difficulty": "Intermediate",
+    "questions": [
+      {
+        "id": 1,
+        "text": "How many layers are in the OSI model?",
+        "options": ["5", "6", "7", "4"],
+        "correct": 2
+      },
+      {
+        "id": 2,
+        "text": "Which protocol is used for sending email?",
+        "options": ["FTP", "HTTP", "SMTP", "POP3"],
+        "correct": 2
+      },
+      {
+        "id": 3,
+        "text": "What does IP stand for?",
+        "options": ["Internet Protocol", "Internal Program", "Internet Process", "Intranet Protocol"],
+        "correct": 0
+      },
+      {
+        "id": 4,
+        "text": "Which layer of the OSI model handles routing?",
+        "options": ["Data Link", "Transport", "Network", "Session"],
+        "correct": 2
+      },
+      {
+        "id": 5,
+        "text": "What is the default port number for HTTP?",
+        "options": ["21", "25", "80", "443"],
+        "correct": 2
+      },
+      {
+        "id": 6,
+        "text": "Which device operates at the Data Link layer?",
+        "options": ["Router", "Switch", "Hub", "Modem"],
+        "correct": 1
+      },
+      {
+        "id": 7,
+        "text": "What does DNS stand for?",
+        "options": ["Dynamic Network Service", "Domain Name System", "Data Network System", "Digital Name Service"],
+        "correct": 1
+      },
+      {
+        "id": 8,
+        "text": "Which protocol provides reliable data delivery?",
+        "options": ["UDP", "TCP", "ICMP", "ARP"],
+        "correct": 1
+      },
+      {
+        "id": 9,
+        "text": "What is the maximum length of an IPv4 address?",
+        "options": ["16 bits", "32 bits", "64 bits", "128 bits"],
+        "correct": 1
+      },
+      {
+        "id": 10,
+        "text": "Which topology connects all devices to a central hub?",
+        "options": ["Bus", "Ring", "Star", "Mesh"],
+        "correct": 2
+      }
+    ]
+  }
+]
+

@@ -1,0 +1,476 @@
+[
+  {
+    "id": 1,
+    "user_id": 2,
+    "user_name": "Arjun Sharma",
+    "exam_id": 1,
+    "exam_name": "Python Programming",
+    "score": 4,
+    "total": 10,
+    "percentage": 40.0,
+    "passed": false,
+    "answers": {
+      "1": 1,
+      "2": 2,
+      "3": 1,
+      "4": 0,
+      "5": 0,
+      "6": 3,
+      "7": 1,
+      "8": 1,
+      "9": 3,
+      "10": 1
+    },
+    "question_results": [
+      {
+        "question_id": 1,
+        "question_text": "What is the output of print(type(10))?",
+        "options": [
+          "<class 'float'>",
+          "<class 'int'>",
+          "<class 'str'>",
+          "<class 'number'>"
+        ],
+        "selected": 1,
+        "correct": 1,
+        "is_correct": true
+      },
+      {
+        "question_id": 2,
+        "question_text": "Which keyword is used to define a function in Python?",
+        "options": [
+          "function",
+          "func",
+          "def",
+          "define"
+        ],
+        "selected": 2,
+        "correct": 2,
+        "is_correct": true
+      },
+      {
+        "question_id": 3,
+        "question_text": "What does 'len([1, 2, 3])' return?",
+        "options": [
+          "2",
+          "3",
+          "4",
+          "1"
+        ],
+        "selected": 1,
+        "correct": 1,
+        "is_correct": true
+      },
+      {
+        "question_id": 4,
+        "question_text": "Which of the following is a mutable data type in Python?",
+        "options": [
+          "tuple",
+          "string",
+          "list",
+          "int"
+        ],
+        "selected": 0,
+        "correct": 2,
+        "is_correct": false
+      },
+      {
+        "question_id": 5,
+        "question_text": "What is the output of 'Hello'[1]?",
+        "options": [
+          "H",
+          "e",
+          "l",
+          "He"
+        ],
+        "selected": 0,
+        "correct": 1,
+        "is_correct": false
+      },
+      {
+        "question_id": 6,
+        "question_text": "Which operator is used for exponentiation in Python?",
+        "options": [
+          "^",
+          "**",
+          "//",
+          "%%"
+        ],
+        "selected": 3,
+        "correct": 1,
+        "is_correct": false
+      },
+      {
+        "question_id": 7,
+        "question_text": "What does the 'break' statement do in a loop?",
+        "options": [
+          "Skips current iteration",
+          "Terminates the loop",
+          "Restarts the loop",
+          "Pauses the loop"
+        ],
+        "selected": 1,
+        "correct": 1,
+        "is_correct": true
+      },
+      {
+        "question_id": 8,
+        "question_text": "How do you start a comment in Python?",
+        "options": [
+          "//",
+          "/* */",
+          "#",
+          "--"
+        ],
+        "selected": 1,
+        "correct": 2,
+        "is_correct": false
+      },
+      {
+        "question_id": 9,
+        "question_text": "What is the output of bool('')?",
+        "options": [
+          "True",
+          "False",
+          "None",
+          "Error"
+        ],
+        "selected": 3,
+        "correct": 1,
+        "is_correct": false
+      },
+      {
+        "question_id": 10,
+        "question_text": "Which method adds an element to the end of a list?",
+        "options": [
+          "add()",
+          "insert()",
+          "append()",
+          "push()"
+        ],
+        "selected": 1,
+        "correct": 2,
+        "is_correct": false
+      }
+    ],
+    "tab_switches": 0,
+    "time_taken_seconds": 90,
+    "submitted_at": "2026-11-12T17:55:37.737831"
+  },
+  {
+    "id": 2,
+    "user_id": 2,
+    "user_name": "Arjun Sharma",
+    "exam_id": 2,
+    "exam_name": "Data Structures & Algorithms",
+    "score": 7,
+    "total": 10,
+    "percentage": 70.0,
+    "passed": true,
+    "answers": {
+      "1": 1,
+      "2": 1,
+      "3": 2,
+      "4": 1,
+      "5": 1,
+      "6": 2,
+      "7": 1,
+      "8": 0,
+      "9": 1,
+      "10": 1
+    },
+    "question_results": [
+      {
+        "question_id": 1,
+        "question_text": "What is the time complexity of binary search?",
+        "options": [
+          "O(n)",
+          "O(log n)",
+          "O(n log n)",
+          "O(1)"
+        ],
+        "selected": 1,
+        "correct": 1,
+        "is_correct": true
+      },
+      {
+        "question_id": 2,
+        "question_text": "Which data structure uses FIFO (First In, First Out)?",
+        "options": [
+          "Stack",
+          "Queue",
+          "Tree",
+          "Graph"
+        ],
+        "selected": 1,
+        "correct": 1,
+        "is_correct": true
+      },
+      {
+        "question_id": 3,
+        "question_text": "What is the worst-case time complexity of Quick Sort?",
+        "options": [
+          "O(n log n)",
+          "O(n)",
+          "O(n\u00c2\u00b2)",
+          "O(log n)"
+        ],
+        "selected": 2,
+        "correct": 2,
+        "is_correct": true
+      },
+      {
+        "question_id": 4,
+        "question_text": "Which data structure is used for BFS (Breadth-First Search)?",
+        "options": [
+          "Stack",
+          "Queue",
+          "Priority Queue",
+          "Deque"
+        ],
+        "selected": 1,
+        "correct": 1,
+        "is_correct": true
+      },
+      {
+        "question_id": 5,
+        "question_text": "A binary tree with n nodes has how many NULL pointers?",
+        "options": [
+          "n",
+          "n - 1",
+          "n + 1",
+          "2n"
+        ],
+        "selected": 1,
+        "correct": 2,
+        "is_correct": false
+      },
+      {
+        "question_id": 6,
+        "question_text": "Which sorting algorithm has the best average-case performance?",
+        "options": [
+          "Bubble Sort",
+          "Selection Sort",
+          "Merge Sort",
+          "Insertion Sort"
+        ],
+        "selected": 2,
+        "correct": 2,
+        "is_correct": true
+      },
+      {
+        "question_id": 7,
+        "question_text": "What does a hash table use to store data?",
+        "options": [
+          "Index",
+          "Key-value pairs",
+          "Pointers",
+          "Nodes"
+        ],
+        "selected": 1,
+        "correct": 1,
+        "is_correct": true
+      },
+      {
+        "question_id": 8,
+        "question_text": "In a max-heap, the root element is:",
+        "options": [
+          "Smallest",
+          "Largest",
+          "Median",
+          "Random"
+        ],
+        "selected": 0,
+        "correct": 1,
+        "is_correct": false
+      },
+      {
+        "question_id": 9,
+        "question_text": "Which traversal visits the root node first?",
+        "options": [
+          "Inorder",
+          "Preorder",
+          "Postorder",
+          "Level-order"
+        ],
+        "selected": 1,
+        "correct": 1,
+        "is_correct": true
+      },
+      {
+        "question_id": 10,
+        "question_text": "What is the space complexity of an adjacency matrix for a graph with V vertices?",
+        "options": [
+          "O(V)",
+          "O(V + E)",
+          "O(V\u00c2\u00b2)",
+          "O(E)"
+        ],
+        "selected": 1,
+        "correct": 2,
+        "is_correct": false
+      }
+    ],
+    "tab_switches": 0,
+    "time_taken_seconds": 110,
+    "submitted_at": "2026-11-13T03:01:32.248715"
+  },
+  {
+    "id": 3,
+    "user_id": 3,
+    "user_name": "INR MASS",
+    "exam_id": 5,
+    "exam_name": "Computer Networks",
+    "score": 5,
+    "total": 10,
+    "percentage": 50.0,
+    "passed": false,
+    "answers": {
+      "1": 2,
+      "2": 2,
+      "3": 0,
+      "4": 1,
+      "5": 1,
+      "6": 0,
+      "7": 1,
+      "8": 0,
+      "9": 1,
+      "10": 0
+    },
+    "question_results": [
+      {
+        "question_id": 1,
+        "question_text": "How many layers are in the OSI model?",
+        "options": [
+          "5",
+          "6",
+          "7",
+          "4"
+        ],
+        "selected": 2,
+        "correct": 2,
+        "is_correct": true
+      },
+      {
+        "question_id": 2,
+        "question_text": "Which protocol is used for sending email?",
+        "options": [
+          "FTP",
+          "HTTP",
+          "SMTP",
+          "POP3"
+        ],
+        "selected": 2,
+        "correct": 2,
+        "is_correct": true
+      },
+      {
+        "question_id": 3,
+        "question_text": "What does IP stand for?",
+        "options": [
+          "Internet Protocol",
+          "Internal Program",
+          "Internet Process",
+          "Intranet Protocol"
+        ],
+        "selected": 0,
+        "correct": 0,
+        "is_correct": true
+      },
+      {
+        "question_id": 4,
+        "question_text": "Which layer of the OSI model handles routing?",
+        "options": [
+          "Data Link",
+          "Transport",
+          "Network",
+          "Session"
+        ],
+        "selected": 1,
+        "correct": 2,
+        "is_correct": false
+      },
+      {
+        "question_id": 5,
+        "question_text": "What is the default port number for HTTP?",
+        "options": [
+          "21",
+          "25",
+          "80",
+          "443"
+        ],
+        "selected": 1,
+        "correct": 2,
+        "is_correct": false
+      },
+      {
+        "question_id": 6,
+        "question_text": "Which device operates at the Data Link layer?",
+        "options": [
+          "Router",
+          "Switch",
+          "Hub",
+          "Modem"
+        ],
+        "selected": 0,
+        "correct": 1,
+        "is_correct": false
+      },
+      {
+        "question_id": 7,
+        "question_text": "What does DNS stand for?",
+        "options": [
+          "Dynamic Network Service",
+          "Domain Name System",
+          "Data Network System",
+          "Digital Name Service"
+        ],
+        "selected": 1,
+        "correct": 1,
+        "is_correct": true
+      },
+      {
+        "question_id": 8,
+        "question_text": "Which protocol provides reliable data delivery?",
+        "options": [
+          "UDP",
+          "TCP",
+          "ICMP",
+          "ARP"
+        ],
+        "selected": 0,
+        "correct": 1,
+        "is_correct": false
+      },
+      {
+        "question_id": 9,
+        "question_text": "What is the maximum length of an IPv4 address?",
+        "options": [
+          "16 bits",
+          "32 bits",
+          "64 bits",
+          "128 bits"
+        ],
+        "selected": 1,
+        "correct": 1,
+        "is_correct": true
+      },
+      {
+        "question_id": 10,
+        "question_text": "Which topology connects all devices to a central hub?",
+        "options": [
+          "Bus",
+          "Ring",
+          "Star",
+          "Mesh"
+        ],
+        "selected": 0,
+        "correct": 2,
+        "is_correct": false
+      }
+    ],
+    "tab_switches": 0,
+    "time_taken_seconds": 77,
+    "submitted_at": "2026-11-13T15:50:02.084387"
+  }
+]
